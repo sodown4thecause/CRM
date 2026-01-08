@@ -4,7 +4,7 @@ import { useChat } from "ai/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Message, X, Minimize2, Maximize2, Send } from "lucide-react";
+import { MessageSquare, X, Minimize2, Maximize2, Send } from "lucide-react";
 import { useState } from "react";
 
 export function FloatingChatbot() {
@@ -22,7 +22,7 @@ export function FloatingChatbot() {
         className="fixed bottom-6 right-6 z-50 rounded-full bg-primary p-4 shadow-lg hover:bg-primary/90 transition-colors"
         aria-label="Open AI Assistant"
       >
-        <Message className="h-6 w-6 text-primary-foreground" />
+        <MessageSquare className="h-6 w-6 text-primary-foreground" />
       </button>
     );
   }
@@ -32,7 +32,7 @@ export function FloatingChatbot() {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3">
         <div className="flex items-center gap-2">
-          <Message className="h-5 w-5 text-primary" />
+          <MessageSquare className="h-5 w-5 text-primary" />
           <h3 className="font-semibold text-card-foreground">AI Assistant</h3>
         </div>
         <div className="flex items-center gap-1">
