@@ -86,7 +86,7 @@ export default async function ContactsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-muted-foreground">
-                      {new Date(contact.createdAt).toLocaleDateString()}
+                      {contact.createdAt ? new Date(contact.createdAt).toLocaleDateString() : 'N/A'}
                     </td>
                   </tr>
                 ))
