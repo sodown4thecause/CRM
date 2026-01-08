@@ -32,26 +32,34 @@ export default function HomePage() {
   }, [currentMessageIndex]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen" style={{ background: '#0f172a' }}>
       {/* Header */}
-      <header className="border-b border-border backdrop-blur-sm sticky top-0 z-50 bg-card/80">
+      <header className="border-b sticky top-0 z-50" style={{ 
+        borderColor: '#334155', 
+        background: 'rgba(15, 23, 42, 0.8)', 
+        backdropFilter: 'blur(12px)' 
+      }}>
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Database className="h-6 w-6 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#f59e0b' }}>
+              <Database className="h-6 w-6" style={{ color: '#000' }} />
             </div>
-            <span className="text-2xl font-bold">AI CRM</span>
+            <span className="text-2xl font-bold" style={{ color: '#fff' }}>AI CRM</span>
           </div>
           <div className="flex items-center gap-4">
             <Link 
               href="/login" 
-              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+              className="font-medium transition-colors"
+              style={{ color: '#94a3b8' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#94a3b8'}
             >
               Sign In
             </Link>
             <Link 
               href="/signup" 
-              className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:opacity-90 transition-all font-semibold shadow-lg"
+              className="px-6 py-2.5 rounded-lg font-semibold shadow-lg transition-opacity hover:opacity-90"
+              style={{ background: '#f59e0b', color: '#000' }}
             >
               Get Started
             </Link>
@@ -63,17 +71,20 @@ export default function HomePage() {
       <section className="container mx-auto px-6 py-16 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-accent/50 border border-accent-foreground/20 rounded-full px-4 py-2">
-              <Sparkles className="h-4 w-4 text-accent-foreground" />
-              <span className="text-sm font-medium text-accent-foreground">AI-Powered Customer Management</span>
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 border" style={{ 
+              background: 'rgba(245, 158, 11, 0.1)', 
+              borderColor: 'rgba(245, 158, 11, 0.3)' 
+            }}>
+              <Sparkles className="h-4 w-4" style={{ color: '#fbbf24' }} />
+              <span className="text-sm font-medium" style={{ color: '#fbbf24' }}>AI-Powered Customer Management</span>
             </div>
             
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight tracking-tight">
+            <h1 className="text-5xl lg:text-7xl font-bold leading-tight" style={{ color: '#fff' }}>
               Manage Customers with{" "}
-              <span className="text-primary">AI Intelligence</span>
+              <span style={{ color: '#f59e0b' }}>AI Intelligence</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
+            <p className="text-xl leading-relaxed max-w-2xl" style={{ color: '#cbd5e1' }}>
               Transform your customer relationships with an intelligent CRM powered by cutting-edge AI. 
               Search, create, and manage contacts using natural language—no complex interfaces needed.
             </p>
@@ -81,61 +92,67 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link 
                 href="/signup" 
-                className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-lg hover:opacity-90 transition-all font-semibold text-lg shadow-xl group"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold text-lg shadow-2xl transition-all hover:scale-105 group"
+                style={{ background: '#f59e0b', color: '#000' }}
               >
                 Start Free Trial
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link 
                 href="#features" 
-                className="inline-flex items-center justify-center gap-2 border-2 border-border bg-card text-foreground px-8 py-4 rounded-lg hover:bg-accent/20 transition-colors font-semibold text-lg"
+                className="inline-flex items-center justify-center gap-2 border-2 px-8 py-4 rounded-lg font-semibold text-lg transition-colors hover:bg-opacity-10"
+                style={{ borderColor: '#475569', color: '#fff', background: '#1e293b' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#334155'}
+                onMouseLeave={(e) => e.currentTarget.style.background = '#1e293b'}
               >
                 Learn More
               </Link>
             </div>
 
             {/* Social Proof */}
-            <div className="flex items-center gap-8 pt-8 border-t border-border">
+            <div className="flex items-center gap-8 pt-8 border-t" style={{ borderColor: '#334155' }}>
               <div>
-                <div className="text-3xl font-bold text-primary">10K+</div>
-                <div className="text-sm text-muted-foreground">Active Users</div>
+                <div className="text-3xl font-bold" style={{ color: '#f59e0b' }}>10K+</div>
+                <div className="text-sm" style={{ color: '#94a3b8' }}>Active Users</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary">500K+</div>
-                <div className="text-sm text-muted-foreground">Contacts Managed</div>
+                <div className="text-3xl font-bold" style={{ color: '#f59e0b' }}>500K+</div>
+                <div className="text-sm" style={{ color: '#94a3b8' }}>Contacts Managed</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-primary">99.9%</div>
-                <div className="text-sm text-muted-foreground">Uptime</div>
+                <div className="text-3xl font-bold" style={{ color: '#f59e0b' }}>99.9%</div>
+                <div className="text-sm" style={{ color: '#94a3b8' }}>Uptime</div>
               </div>
             </div>
           </div>
 
           {/* AI Chat Demo */}
           <div className="relative">
-            <div className="absolute inset-0 bg-primary/10 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-card border border-border rounded-2xl shadow-2xl overflow-hidden">
+            <div className="absolute inset-0 rounded-3xl blur-3xl" style={{ background: 'rgba(245, 158, 11, 0.15)' }}></div>
+            <div className="relative border rounded-2xl shadow-2xl overflow-hidden" style={{ background: '#1e293b', borderColor: '#334155' }}>
               {/* Window Header */}
-              <div className="flex items-center justify-between px-6 py-4 bg-muted/30 border-b border-border">
+              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ background: 'rgba(51, 65, 81, 0.3)', borderColor: '#334155' }}>
                 <div className="flex items-center gap-3">
-                  <Bot className="h-5 w-5 text-primary" />
-                  <span className="font-semibold">AI Assistant</span>
-                  <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">Live Demo</span>
+                  <Bot className="h-5 w-5" style={{ color: '#f59e0b' }} />
+                  <span className="font-semibold" style={{ color: '#fff' }}>AI Assistant</span>
+                  <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>
+                    Live Demo
+                  </span>
                 </div>
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(239, 68, 68, 0.8)' }}></div>
+                  <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(234, 179, 8, 0.8)' }}></div>
+                  <div className="w-3 h-3 rounded-full" style={{ background: 'rgba(34, 197, 94, 0.8)' }}></div>
                 </div>
               </div>
               
               {/* Chat Messages */}
-              <div className="h-[500px] overflow-y-auto p-6 space-y-4 bg-background/50">
+              <div className="h-[500px] overflow-y-auto p-6 space-y-4" style={{ background: 'rgba(15, 23, 42, 0.5)' }}>
                 {chatMessages.length === 0 ? (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center space-y-2">
-                      <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto opacity-50" />
-                      <p className="text-muted-foreground">Watch the AI assistant in action...</p>
+                      <MessageSquare className="h-12 w-12 mx-auto opacity-50" style={{ color: '#64748b' }} />
+                      <p style={{ color: '#64748b' }}>Watch the AI assistant in action...</p>
                     </div>
                   </div>
                 ) : (
@@ -145,11 +162,11 @@ export default function HomePage() {
                       className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-slide-up`}
                     >
                       <div
-                        className={`max-w-[85%] rounded-xl px-5 py-3 shadow-md ${
-                          msg.role === "user"
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-muted text-foreground border border-border"
-                        }`}
+                        className="max-w-[85%] rounded-xl px-5 py-3 shadow-md"
+                        style={msg.role === "user" 
+                          ? { background: '#f59e0b', color: '#000' }
+                          : { background: '#334155', color: '#e2e8f0', border: '1px solid #475569' }
+                        }
                       >
                         <p className="text-sm leading-relaxed whitespace-pre-wrap font-medium">{msg.text}</p>
                       </div>
@@ -163,65 +180,43 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="container mx-auto px-6 py-20 bg-muted/30">
+      <section id="features" className="container mx-auto px-6 py-20" style={{ background: 'rgba(30, 41, 59, 0.3)' }}>
         <div className="text-center mb-16 space-y-4">
-          <h2 className="text-4xl lg:text-5xl font-bold">
+          <h2 className="text-4xl lg:text-5xl font-bold" style={{ color: '#fff' }}>
             Everything You Need
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl max-w-3xl mx-auto" style={{ color: '#94a3b8' }}>
             Powerful features designed to streamline your customer relationship management
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Feature Cards */}
           {[
-            {
-              icon: MessageSquare,
-              title: "AI Chat Assistant",
-              description: "Interact with your CRM using natural language. No training required—just ask.",
-              color: "text-blue-500"
-            },
-            {
-              icon: Users,
-              title: "Smart Contacts",
-              description: "Organize and manage all your contacts with intelligent categorization and insights.",
-              color: "text-purple-500"
-            },
-            {
-              icon: TrendingUp,
-              title: "Lead Tracking",
-              description: "Monitor lead status, probability, and close dates with AI-powered predictions.",
-              color: "text-green-500"
-            },
-            {
-              icon: Database,
-              title: "Robust Database",
-              description: "Built on PostgreSQL and Drizzle ORM for maximum reliability and performance.",
-              color: "text-orange-500"
-            },
-            {
-              icon: BarChart3,
-              title: "Analytics & Insights",
-              description: "Get real-time insights about your contacts, leads, and business metrics.",
-              color: "text-pink-500"
-            },
-            {
-              icon: Zap,
-              title: "Automation",
-              description: "Automate repetitive tasks and workflows. Focus on what matters most.",
-              color: "text-cyan-500"
-            },
+            { icon: MessageSquare, title: "AI Chat Assistant", description: "Interact with your CRM using natural language. No training required—just ask.", color: "#3b82f6" },
+            { icon: Users, title: "Smart Contacts", description: "Organize and manage all your contacts with intelligent categorization and insights.", color: "#a855f7" },
+            { icon: TrendingUp, title: "Lead Tracking", description: "Monitor lead status, probability, and close dates with AI-powered predictions.", color: "#22c55e" },
+            { icon: Database, title: "Robust Database", description: "Built on PostgreSQL and Drizzle ORM for maximum reliability and performance.", color: "#f97316" },
+            { icon: BarChart3, title: "Analytics & Insights", description: "Get real-time insights about your contacts, leads, and business metrics.", color: "#ec4899" },
+            { icon: Zap, title: "Automation", description: "Automate repetitive tasks and workflows. Focus on what matters most.", color: "#06b6d4" },
           ].map((feature, idx) => (
             <div
               key={idx}
-              className="group bg-card border border-border rounded-xl p-8 hover:shadow-xl hover:border-primary/50 transition-all hover:-translate-y-1"
+              className="group border rounded-xl p-8 transition-all hover:-translate-y-1 hover:shadow-2xl"
+              style={{ background: '#1e293b', borderColor: '#334155' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#f59e0b88';
+                e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#334155';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
-              <div className={`w-14 h-14 bg-muted rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                <feature.icon className={`h-7 w-7 ${feature.color}`} />
+              <div className="w-14 h-14 rounded-lg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform" style={{ background: '#334155' }}>
+                <feature.icon className="h-7 w-7" style={{ color: feature.color }} />
               </div>
-              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#fff' }}>{feature.title}</h3>
+              <p className="leading-relaxed" style={{ color: '#94a3b8' }}>{feature.description}</p>
             </div>
           ))}
         </div>
@@ -229,25 +224,32 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="container mx-auto px-6 py-20">
-        <div className="bg-gradient-to-br from-primary/20 via-accent/20 to-primary/10 border border-primary/20 rounded-3xl p-12 lg:p-16 text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+        <div className="border rounded-3xl p-12 lg:p-16 text-center" style={{
+          background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(146, 64, 14, 0.2) 50%, rgba(245, 158, 11, 0.1) 100%)',
+          borderColor: 'rgba(245, 158, 11, 0.3)'
+        }}>
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#fff' }}>
             Ready to Transform Your CRM?
           </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
+          <p className="text-xl mb-10 max-w-3xl mx-auto" style={{ color: '#cbd5e1' }}>
             Join thousands of businesses using AI to manage customer relationships more effectively. 
             Start your free trial today—no credit card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/signup" 
-              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-10 py-5 rounded-lg hover:opacity-90 transition-all font-bold text-lg shadow-2xl"
+              className="inline-flex items-center justify-center gap-2 px-10 py-5 rounded-lg font-bold text-lg shadow-2xl transition-opacity hover:opacity-90"
+              style={{ background: '#f59e0b', color: '#000' }}
             >
               Start Free Trial
               <ArrowRight className="h-5 w-5" />
             </Link>
             <Link 
               href="/login" 
-              className="inline-flex items-center justify-center gap-2 border-2 border-border bg-card text-foreground px-10 py-5 rounded-lg hover:bg-accent/20 transition-colors font-bold text-lg"
+              className="inline-flex items-center justify-center gap-2 border-2 px-10 py-5 rounded-lg font-bold text-lg transition-colors"
+              style={{ borderColor: '#334155', background: '#1e293b', color: '#fff' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#334155'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#1e293b'}
             >
               Sign In
             </Link>
@@ -256,16 +258,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-muted/30">
+      <footer className="border-t" style={{ borderColor: '#334155', background: 'rgba(30, 41, 59, 0.5)' }}>
         <div className="container mx-auto px-6 py-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <Database className="h-5 w-5 text-primary-foreground" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#f59e0b' }}>
+                <Database className="h-5 w-5" style={{ color: '#000' }} />
               </div>
-              <span className="text-lg font-bold">AI CRM</span>
+              <span className="text-lg font-bold" style={{ color: '#fff' }}>AI CRM</span>
             </div>
-            <p className="text-muted-foreground text-center">
+            <p className="text-center" style={{ color: '#94a3b8' }}>
               © 2026 AI CRM. Powered by AI SDK 6, Next.js, and Vercel.
             </p>
           </div>
