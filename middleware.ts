@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const sessionToken = request.cookies.get("better-auth.session_token")?.value;
+
   // Allow auth routes
   if (request.nextUrl.pathname.startsWith("/login") || 
       request.nextUrl.pathname.startsWith("/signup") ||
@@ -9,10 +11,16 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Redirect root to login if not authenticated, dashboard if authenticated
+  if (request.nextUrl.pathname === "/") {
+    if (!sessionToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   // Protect dashboard routes
   if (request.nextUrl.pathname.startsWith("/dashboard")) {
-    const sessionToken = request.cookies.get("better-auth.session_token")?.value;
-    
     if (!sessionToken) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
