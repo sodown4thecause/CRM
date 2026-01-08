@@ -1,21 +1,21 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { streamText, tool, convertToModelMessages, UIMessage, stepCountIs } from "ai";
+import { streamText, tool } from "ai";
 import { z } from "zod";
 import { db } from "@/db";
 import { contacts, leads } from "@/db/schema";
-import { eq, ilike, or, desc, sql } from "drizzle-orm";
-
-// Create Vercel AI Gateway client for DeepSeek
-const aiGateway = createOpenAI({
-  baseURL: process.env.AI_GATEWAY_BASE_URL,
-  apiKey: process.env.AI_GATEWAY_API_KEY,
-});
+import { eq, ilike, or, desc } from "drizzle-orm";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const { messages } = await req.json();
+
+  // Create Vercel AI Gateway client
+  const aiGateway = createOpenAI({
+    baseURL: process.env.AI_GATEWAY_BASE_URL,
+    apiKey: process.env.AI_GATEWAY_API_KEY,
+  });
 
   const result = streamText({
     model: aiGateway("deepseek/deepseek-v3.2"),
@@ -29,8 +29,7 @@ You can help users:
 
 Always be helpful, concise, and accurate. When making changes to the database, confirm the action was successful.
 Use the appropriate tools to access and modify the CRM data.`,
-    messages: await convertToModelMessages(messages),
-    stopWhen: stepCountIs(10), // Allow multi-step tool usage
+    messages,
     tools: {
       searchContacts: tool({
         description: "Search for contacts by name, email, or company",
@@ -141,7 +140,7 @@ Use the appropriate tools to access and modify the CRM data.`,
             };
           } catch (error: any) {
             console.error("Error creating contact:", error);
-            if (error.code === '23505') { // Unique constraint violation
+            if (error.code === '23505') {
               return { success: false, error: "A contact with this email already exists" };
             }
             return { success: false, error: "Failed to create contact" };
@@ -151,7 +150,7 @@ Use the appropriate tools to access and modify the CRM data.`,
       updateContact: tool({
         description: "Update an existing contact's information",
         inputSchema: z.object({
-          id: z.number().describe("The ID of the contact to update"),
+          id: z.number().describe(" ID of the contact to update"),
           name: z.string().optional().describe("Updated name"),
           email: z.string().email().optional().describe("Updated email"),
           phone: z.string().optional().describe("Updated phone number"),
@@ -162,7 +161,6 @@ Use the appropriate tools to access and modify the CRM data.`,
         }),
         execute: async ({ id, ...updates }) => {
           try {
-            // Filter out undefined values
             const updateData: any = {};
             Object.entries(updates).forEach(([key, value]) => {
               if (value !== undefined) {
@@ -225,7 +223,7 @@ Use the appropriate tools to access and modify the CRM data.`,
         },
       }),
       listAllContacts: tool({
-        description: "List all contacts in the CRM with optional filtering and limit",
+        description: "List all contacts in the CRM with optional filtering",
         inputSchema: z.object({
           status: z.enum(["lead", "prospect", "customer", "inactive"]).optional().describe("Filter by status"),
           limit: z.number().default(20).describe("Maximum number of contacts to return"),
@@ -243,7 +241,6 @@ Use the appropriate tools to access and modify the CRM data.`,
             return {
               contacts: results,
               count: results.length,
-              filtered: status ? `by status: ${status}` : "all contacts",
             };
           } catch (error) {
             console.error("Error listing contacts:", error);
@@ -264,18 +261,12 @@ Use the appropriate tools to access and modify the CRM data.`,
                 acc[l.status] = (acc[l.status] || 0) + 1;
                 return acc;
               }, {} as Record<string, number>),
-              bySource: allLeads.reduce((acc, l) => {
-                if (l.source) {
-                  acc[l.source] = (acc[l.source] || 0) + 1;
-                }
-                return acc;
-              }, {} as Record<string, number>),
             };
 
             return stats;
           } catch (error) {
             console.error("Error getting lead stats:", error);
-            return { total: 0, byStatus: {}, bySource: {}, error: "Failed to get lead stats" };
+            return { total: 0, byStatus: {}, error: "Failed to get lead stats" };
           }
         },
       }),
@@ -283,19 +274,17 @@ Use the appropriate tools to access and modify the CRM data.`,
         description: "Create a new lead for a contact",
         inputSchema: z.object({
           contactId: z.number().describe("The ID of the contact this lead is for"),
-          source: z.string().optional().describe("Where the lead came from (e.g., 'website', 'referral', 'cold call')"),
+          source: z.string().optional().describe("Where the lead came from"),
           status: z.string().describe("Current status of the lead"),
           probability: z.string().optional().describe("Probability of closing (0-100)"),
-          expectedCloseDate: z.string().optional().describe("Expected close date (ISO format)"),
         }),
-        execute: async ({ contactId, source, status, probability, expectedCloseDate }) => {
+        execute: async ({ contactId, source, status, probability }) => {
           try {
             const newLead = await db.insert(leads).values({
               contactId,
               source: source || null,
               status,
               probability: probability || null,
-              expectedCloseDate: expectedCloseDate ? new Date(expectedCloseDate) : null,
             }).returning();
             
             return { 
@@ -312,5 +301,5 @@ Use the appropriate tools to access and modify the CRM data.`,
     },
   });
 
-  return result.toUIMessageStreamResponse();
+  return result.toDataStreamResponse();
 }
