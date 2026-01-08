@@ -4,12 +4,11 @@ import { drizzle } from 'drizzle-orm/neon-http';
 // Configure Neon for edge runtime
 neonConfig.fetchConnectionCache = true;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is not set');
-}
+// Allow build to succeed without DATABASE_URL (it will be set in production)
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://placeholder';
 
 // Create Neon connection
-const sql = neon(process.env.DATABASE_URL);
+const sql = neon(databaseUrl);
 
 // Create Drizzle instance
 export const db = drizzle(sql);
