@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     tools: {
       searchContacts: tool({
         description: "Search for contacts by name, email, or company",
-        parameters: z.object({
+        inputSchema: z.object({
           query: z.string().describe("The search query to find contacts"),
         }),
         execute: async ({ query }) => {
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       }),
       getContactStats: tool({
         description: "Get statistics about contacts in the CRM",
-        parameters: z.object({}),
+        inputSchema: z.object({}),
         execute: async () => {
           try {
             const allContacts = await db.select().from(contacts);
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
                 return acc;
               }, {} as Record<string, number>),
               recent: allContacts.filter(
-                c => new Date(c.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                c => c.createdAt && new Date(c.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
               ).length,
             };
 
