@@ -1,4 +1,3 @@
-// BetterAuth schema will be generated here
-// Run: npx @better-auth/cli generate
-
+// Export all schema tables
 export * from './crm';
+export * from './auth';
