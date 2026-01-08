@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { streamText, tool } from "ai";
+import { streamText, tool, convertToModelMessages, UIMessage } from "ai";
 import { z } from "zod";
 import { db } from "@/db";
 import { contacts } from "@/db/schema";
@@ -15,14 +15,14 @@ const aiGateway = createOpenAI({
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
     model: aiGateway("deepseek/deepseek-v3.2"),
     system: `You are a helpful CRM assistant. You can help users manage their contacts and leads.
     When users ask about contacts, use the searchContacts tool to find them.
     Be concise and helpful in your responses.`,
-    messages,
+    messages: await convertToModelMessages(messages),
     tools: {
       searchContacts: tool({
         description: "Search for contacts by name, email, or company",
@@ -88,5 +88,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -10,9 +11,12 @@ import { useState } from "react";
 export function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [input, setInput] = useState("");
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/chat",
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
   });
 
   if (!isOpen) {
@@ -84,13 +88,15 @@ export function FloatingChatbot() {
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">
-                      {message.content}
+                      {message.parts.map((part, index) =>
+                        part.type === "text" ? part.text : null
+                      ).join("")}
                     </p>
                   </div>
                 </div>
               ))
             )}
-            {isLoading && (
+            {(status === "submitted" || status === "streaming") && (
               <div className="flex justify-start">
                 <div className="max-w-[80%] rounded-lg bg-muted px-3 py-2">
                   <p className="text-sm text-muted-foreground">
@@ -102,19 +108,28 @@ export function FloatingChatbot() {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="border-t border-border p-4">
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (input.trim()) {
+                sendMessage({ text: input });
+                setInput("");
+              }
+            }} 
+            className="border-t border-border p-4"
+          >
             <div className="flex gap-2">
               <Input
                 value={input}
-                onChange={handleInputChange}
+                onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about contacts, stats..."
-                disabled={isLoading}
+                disabled={status !== "ready"}
                 className="flex-1 bg-background"
               />
               <Button
                 type="submit"
                 size="icon"
-                disabled={isLoading || !input.trim()}
+                disabled={status !== "ready" || !input.trim()}
                 className="bg-primary hover:bg-primary/90"
               >
                 <Send className="h-4 w-4" />
