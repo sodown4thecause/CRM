@@ -16,12 +16,14 @@ export function FloatingChatbot() {
     api: "/api/chat",
   });
 
-  // Listen for custom events to pre-fill the chat
+  // Listen for custom events to trigger chatbot
   useEffect(() => {
     const handleOpenChat = (e: any) => {
+      console.log("Chatbot event received:", e.detail);
       setIsOpen(true);
       setIsMinimized(false);
-      setInput(e.detail);
+      // Send the message directly
+      sendMessage(e.detail);
     };
     
     window.addEventListener('open-chatbot', handleOpenChat);
@@ -29,7 +31,7 @@ export function FloatingChatbot() {
     return () => {
       window.removeEventListener('open-chatbot', handleOpenChat);
     };
-  }, []);
+  }, [sendMessage]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,19 +103,28 @@ export function FloatingChatbot() {
                       <div className="mt-4 pt-4 border-t border-border">
                         <p className="text-xs font-medium mb-2">Quick Actions:</p>
                         <button
-                          onClick={() => setInput("Create a new contact")}
+                          onClick={() => {
+                            const msg = "Create a new contact";
+                            sendMessage(msg);
+                          }}
                           className="w-full text-left text-xs bg-primary/10 hover:bg-primary/20 text-primary px-3 py-2 rounded-md transition-colors mb-2"
                         >
                           ➕ Add a contact
                         </button>
                         <button
-                          onClick={() => setInput("Show me all contacts")}
+                          onClick={() => {
+                            const msg = "Show me all contacts";
+                            sendMessage(msg);
+                          }}
                           className="w-full text-left text-xs bg-muted hover:bg-muted/70 px-3 py-2 rounded-md transition-colors mb-2"
                         >
                           📊 View all contacts
                         </button>
                         <button
-                          onClick={() => setInput("Get contact statistics")}
+                          onClick={() => {
+                            const msg = "Get contact statistics";
+                            sendMessage(msg);
+                          }}
                           className="w-full text-left text-xs bg-muted hover:bg-muted/70 px-3 py-2 rounded-md transition-colors"
                         >
                           📈 Get statistics
